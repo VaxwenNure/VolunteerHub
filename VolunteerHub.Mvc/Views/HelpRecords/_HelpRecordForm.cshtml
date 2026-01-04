@@ -1,0 +1,23 @@
+﻿@model VolunteerHub.Mvc.Models.ViewModels.HelpRecordEditVm
+
+<div>
+    <label>Volunteer</label><br />
+    <select asp-for="VolunteerId" asp-items="Model.Volunteers"></select>
+    <br /><br />
+
+    <label>Help type</label><br />
+    <select asp-for="HelpTypeId" asp-items="Model.HelpTypes"></select>
+    <br /><br />
+
+    <label>Date</label><br />
+    <input asp-for="Date" type="date" />
+    <br /><br />
+
+    <label>Amount</label><br />
+    <input asp-for="Amount" />
+    <br /><br />
+
+    <label>Description</label><br />
+    <input asp-for="Description" />
+    <br /><br />
+</div>

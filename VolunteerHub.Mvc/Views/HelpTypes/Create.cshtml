@@ -1,0 +1,13 @@
+﻿@model VolunteerHub.Mvc.Models.HelpType
+
+<h2>Create Help Type</h2>
+
+<form asp-action="Create" method="post">
+    <partial name="_HelpTypeForm" model="Model" />
+    <button type="submit">Save</button>
+    <a asp-action="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

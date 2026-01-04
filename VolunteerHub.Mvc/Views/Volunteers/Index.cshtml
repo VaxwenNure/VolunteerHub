@@ -1,0 +1,25 @@
+﻿@model List<VolunteerHub.Mvc.Models.Volunteer>
+
+<h2>Volunteers</h2>
+<p><a asp-action="Create">Create new</a></p>
+
+<table>
+    <thead>
+        <tr><th>Id</th><th>Full name</th><th>Phone</th><th></th></tr>
+    </thead>
+    <tbody>
+        @foreach (var v in Model)
+        {
+            <tr>
+                <td>@v.Id</td>
+                <td>@v.FullName</td>
+                <td>@v.Phone</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@v.Id">Details</a> |
+                    <a asp-action="Edit" asp-route-id="@v.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@v.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

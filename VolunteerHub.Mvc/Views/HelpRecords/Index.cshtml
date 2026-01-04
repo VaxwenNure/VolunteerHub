@@ -1,0 +1,50 @@
+﻿@model List<VolunteerHub.Mvc.Models.HelpRecord>
+
+@{
+    // From controller:
+    // ViewBag.Volunteers = Dictionary<int,string>
+    // ViewBag.HelpTypes = Dictionary<int,string>
+    var volunteers = ViewBag.Volunteers as Dictionary<int, string> ?? new Dictionary<int, string>();
+    var helpTypes = ViewBag.HelpTypes as Dictionary<int, string> ?? new Dictionary<int, string>();
+}
+
+<h2>Help Records</h2>
+
+<p><a asp-action="Create">Create new</a></p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Volunteer</th>
+            <th>Type</th>
+            <th>Amount</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr>
+                <td>@r.Id</td>
+                <td>@r.Date.ToString("yyyy-MM-dd")</td>
+                <td>@(volunteers.ContainsKey(r.VolunteerId) ? volunteers[r.VolunteerId] : $"#{r.VolunteerId}")</td>
+                <td>@(helpTypes.ContainsKey(r.HelpTypeId) ? helpTypes[r.HelpTypeId] : $"#{r.HelpTypeId}")</td>
+                <td><money value="@r.Amount"></money></td>
+                <td>@r.Description</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@r.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@r.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        console.log("HelpRecords index loaded");
+    </script>
+}

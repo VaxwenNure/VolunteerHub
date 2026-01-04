@@ -1,0 +1,10 @@
+[
+    {
+        "Id": 1,
+        "VolunteerId": 1,
+        "HelpTypeId": 1,
+        "Date": "2026-01-02T00:00:00",
+        "Amount": 1500,
+        "Description": "Donation for fuel"
+    }
+]

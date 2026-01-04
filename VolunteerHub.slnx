@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="VolunteerHub.Data/VolunteerHub.Data.csproj" />
+  <Project Path="VolunteerHub.Mvc/VolunteerHub.Mvc.csproj" Id="1304e9a5-d1f6-4055-8aa4-cf0304c6fe0f" />
+  <Project Path="VolunteerHubUI/VolunteerHub.Wpf.csproj" />
+</Solution>

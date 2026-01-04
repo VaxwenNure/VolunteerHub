@@ -1,0 +1,19 @@
+﻿@model VolunteerHub.Mvc.Models.HelpRecord
+
+<h2>Delete Help Record</h2>
+
+<p>Are you sure you want to delete record <b>#@Model.Id</b>?</p>
+
+<ul>
+    <li>Date: @Model.Date.ToString("yyyy-MM-dd")</li>
+    <li>VolunteerId: @Model.VolunteerId</li>
+    <li>HelpTypeId: @Model.HelpTypeId</li>
+    <li>Amount: <money value="@Model.Amount"></money></li>
+    <li>Description: @Model.Description</li>
+</ul>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Delete</button>
+    <a asp-action="Index">Cancel</a>
+</form>

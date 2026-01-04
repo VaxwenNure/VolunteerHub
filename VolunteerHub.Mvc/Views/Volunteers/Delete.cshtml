@@ -1,0 +1,10 @@
+﻿@model VolunteerHub.Mvc.Models.Volunteer
+
+<h2>Delete Volunteer</h2>
+<p>Are you sure you want to delete <b>@Model.FullName</b>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button type="submit">Delete</button>
+    <a asp-action="Index">Cancel</a>
+</form>

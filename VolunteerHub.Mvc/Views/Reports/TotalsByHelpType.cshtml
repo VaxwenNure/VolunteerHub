@@ -1,0 +1,26 @@
+﻿@model List<VolunteerHub.Mvc.Services.TotalByTypeRow>
+
+<h2>Report: Totals by Help Type</h2>
+<p style="color:#666;">This report groups help records by help type and calculates total amount.</p>
+
+<partial name="_DateFilter" />
+
+<table>
+    <thead>
+        <tr>
+            <th>Help type</th>
+            <th>Records</th>
+            <th>Total amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in Model)
+        {
+            <tr>
+                <td>@row.HelpTypeName</td>
+                <td>@row.RecordsCount</td>
+                <td><money value="@row.TotalAmount"></money></td>
+            </tr>
+        }
+    </tbody>
+</table>

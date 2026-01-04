@@ -1,0 +1,14 @@
+﻿@model VolunteerHub.Mvc.Models.ViewModels.HelpRecordEditVm
+
+<h2>Edit Help Record</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_HelpRecordForm" model="Model" />
+    <button type="submit">Save</button>
+    <a asp-action="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
