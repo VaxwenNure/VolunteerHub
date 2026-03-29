@@ -1,9 +1,17 @@
-﻿@model List<VolunteerHub.Mvc.Services.TotalByTypeRow>
+@using VolunteerHub.Mvc.Services
+@model List<TotalByTypeRow>
 
 <h2>Report: Totals by Help Type</h2>
-<p style="color:#666;">This report groups help records by help type and calculates total amount.</p>
+<p class="description">This report groups help records by help type and calculates total amount.</p>
 
-<partial name="_DateFilter" />
+<form method="get">
+    From: <input type="date" name="from" value="@ViewBag.From" />
+    To: <input type="date" name="to" value="@ViewBag.To" />
+    <button type="submit">Apply</button>
+    <a asp-action="TotalsByHelpType">Reset</a>
+</form>
+
+<br />
 
 <table>
     <thead>
@@ -19,7 +27,7 @@
             <tr>
                 <td>@row.HelpTypeName</td>
                 <td>@row.RecordsCount</td>
-                <td><money value="@row.TotalAmount"></money></td>
+                <td><b>@row.TotalAmount.ToString("N2") UAH</b></td>
             </tr>
         }
     </tbody>

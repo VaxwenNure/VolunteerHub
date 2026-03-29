@@ -1,9 +1,12 @@
-﻿@model VolunteerHub.Mvc.Models.HelpType
+@using VolunteerHub.Data.Models
+@model HelpType
 
-<h2>Create Help Type</h2>
+<h2>Add Help Type</h2>
 
 <form asp-action="Create" method="post">
-    <partial name="_HelpTypeForm" model="Model" />
+    <label>Name</label><br />
+    <input asp-for="Name" /><span asp-validation-for="Name" style="color:red"></span>
+    <br /><br />
     <button type="submit">Save</button>
     <a asp-action="Index">Cancel</a>
 </form>

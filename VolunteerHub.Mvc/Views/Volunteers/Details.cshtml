@@ -1,0 +1,38 @@
+@using VolunteerHub.Data.Models
+@model Volunteer
+
+<h2>Volunteer: @Model.FullName</h2>
+
+<p><strong>Phone:</strong> @Model.Phone</p>
+
+<h3>Help Records</h3>
+
+@if (!Model.VolunteerHelps.Any())
+{
+    <p>No records for this volunteer yet.</p>
+}
+else
+{
+    <table>
+        <thead>
+            <tr><th>Date</th><th>Type</th><th>Amount</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var h in Model.VolunteerHelps.OrderByDescending(x => x.HelpDate))
+            {
+                <tr>
+                    <td>@h.HelpDate.ToString("yyyy-MM-dd")</td>
+                    <td>@h.HelpType?.Name</td>
+                    <td>@h.Amount.ToString("N2") UAH</td>
+                    <td>@h.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <p><strong>Total: @Model.VolunteerHelps.Sum(h => h.Amount).ToString("N2") UAH</strong></p>
+}
+
+<p>
+    <a asp-action="Edit" asp-route-id="@Model.VolunteerId">Edit</a> |
+    <a asp-action="Index">Back to list</a>
+</p>

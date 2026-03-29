@@ -4,7 +4,11 @@
         Title="Volunteer Hub" Height="600" Width="950"
         Loaded="Window_Loaded">
     <Grid Margin="10">
-        <TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="79*"/>
+            <RowDefinition Height="62*"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.RowSpan="2">
             <!-- Volunteers -->
             <TabItem Header="Volunteers">
                 <Grid Margin="10">

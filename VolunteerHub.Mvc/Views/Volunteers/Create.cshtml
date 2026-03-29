@@ -1,8 +1,19 @@
-﻿@model VolunteerHub.Mvc.Models.Volunteer
+@using VolunteerHub.Data.Models
+@model Volunteer
 
-<h2>Create Volunteer</h2>
+<h2>Add Volunteer</h2>
 
 <form asp-action="Create" method="post">
-    <partial name="_VolunteerForm" model="Model" />
+    <label>Full name</label><br />
+    <input asp-for="FullName" /><span asp-validation-for="FullName" style="color:red"></span>
+    <br /><br />
+    <label>Phone</label><br />
+    <input asp-for="Phone" />
+    <br /><br />
     <button type="submit">Save</button>
+    <a asp-action="Index">Cancel</a>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

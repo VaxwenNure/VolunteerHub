@@ -1,21 +1,12 @@
-﻿@model List<VolunteerHub.Mvc.Models.HelpRecord>
-
-@{
-    // From controller:
-    // ViewBag.Volunteers = Dictionary<int,string>
-    // ViewBag.HelpTypes = Dictionary<int,string>
-    var volunteers = ViewBag.Volunteers as Dictionary<int, string> ?? new Dictionary<int, string>();
-    var helpTypes = ViewBag.HelpTypes as Dictionary<int, string> ?? new Dictionary<int, string>();
-}
+@using VolunteerHub.Data.Models
+@model List<VolunteerHelp>
 
 <h2>Help Records</h2>
-
-<p><a asp-action="Create">Create new</a></p>
+<p class="add-button"><a asp-action="Create">Add new record</a></p>
 
 <table>
     <thead>
         <tr>
-            <th>Id</th>
             <th>Date</th>
             <th>Volunteer</th>
             <th>Type</th>
@@ -28,23 +19,16 @@
         @foreach (var r in Model)
         {
             <tr>
-                <td>@r.Id</td>
-                <td>@r.Date.ToString("yyyy-MM-dd")</td>
-                <td>@(volunteers.ContainsKey(r.VolunteerId) ? volunteers[r.VolunteerId] : $"#{r.VolunteerId}")</td>
-                <td>@(helpTypes.ContainsKey(r.HelpTypeId) ? helpTypes[r.HelpTypeId] : $"#{r.HelpTypeId}")</td>
-                <td><money value="@r.Amount"></money></td>
+                <td>@r.HelpDate.ToString("yyyy-MM-dd")</td>
+                <td>@r.Volunteer?.FullName</td>
+                <td>@r.HelpType?.Name</td>
+                <td>@r.Amount.ToString("N2") UAH</td>
                 <td>@r.Description</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@r.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@r.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@r.VolunteerHelpId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@r.VolunteerHelpId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-@section Scripts {
-    <script>
-        console.log("HelpRecords index loaded");
-    </script>
-}

@@ -5,15 +5,12 @@ namespace VolunteerHub.Data.Data;
 
 public class VolunteerHubContext : DbContext
 {
+    public VolunteerHubContext(DbContextOptions<VolunteerHubContext> options)
+        : base(options) { }
+
     public DbSet<Volunteer> Volunteers => Set<Volunteer>();
     public DbSet<HelpType> HelpTypes => Set<HelpType>();
     public DbSet<VolunteerHelp> VolunteerHelps => Set<VolunteerHelp>();
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        // SQLite local file near the executable
-        optionsBuilder.UseSqlite("Data Source=volunteerhub.db");
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,0 +1,242 @@
+@using VolunteerHub.Mvc.Models.ViewModels
+@model DashboardVm
+
+<style>
+    @* ── Dashboard page styles ── *@
+    .dash-header {
+        margin: 0 0 32px 0;
+    }
+
+    .dash-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin: 0 0 4px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .dash-header p {
+        color: #6b7280;
+        margin: 0;
+        font-size: 0.95rem;
+    }
+
+    /* ── Stat cards ── */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        margin-bottom: 40px;
+    }
+
+    .stat-card {
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 24px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+        .stat-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            transform: translateY(-2px);
+        }
+
+        .stat-card .icon {
+            font-size: 1.6rem;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+
+        .stat-card .label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #9ca3af;
+        }
+
+        .stat-card.accent-blue {
+            border-top: 3px solid #3b82f6;
+        }
+
+        .stat-card.accent-green {
+            border-top: 3px solid #22c55e;
+        }
+
+        .stat-card.accent-amber {
+            border-top: 3px solid #f59e0b;
+        }
+
+        .stat-card.accent-rose {
+            border-top: 3px solid #f43f5e;
+        }
+
+    /* ── Section title ── */
+    .section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin: 0 0 14px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e5e7eb;
+        }
+
+    /* ── Activity table ── */
+    .activity-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+        .activity-table thead {
+            background: #f8fafc;
+        }
+
+        .activity-table th {
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            color: #6b7280;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .activity-table td {
+            padding: 13px 16px;
+            font-size: 0.92rem;
+            color: #374151;
+            border-bottom: 1px solid #f3f4f6;
+            vertical-align: middle;
+        }
+
+        .activity-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .activity-table tbody tr:hover td {
+            background: #f8fafc;
+        }
+
+    .badge {
+        display: inline-block;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: #eff6ff;
+        color: #3b82f6;
+    }
+
+    .amount {
+        font-weight: 700;
+        color: #22c55e;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 48px 20px;
+        color: #9ca3af;
+        background: #fff;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+    }
+
+        .empty-state a {
+            color: #3b82f6;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+            .empty-state a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+<div class="dash-header">
+    <h2>Volunteer Hub — Dashboard</h2>
+    <p>Overview of all volunteer activity</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card accent-blue">
+        <div class="icon"><i class="fa-solid fa-user"></i></div>
+        <div class="num">@Model.TotalVolunteers</div>
+        <div class="label">Volunteers</div>
+    </div>
+    <div class="stat-card accent-green">
+        <div class="icon"><i class="fa-solid fa-clipboard"></i></div>
+        <div class="num">@Model.TotalRecords</div>
+        <div class="label">Help Records</div>
+    </div>
+    <div class="stat-card accent-amber">
+        <div class="icon"><i class="fa-regular fa-folder-closed"></i></div>
+        <div class="num">@Model.TotalHelpTypes</div>
+        <div class="label">Help Types</div>
+    </div>
+    <div class="stat-card accent-rose">
+        <div class="icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <div class="num">@Model.TotalAmount.ToString("N0")</div>
+        <div class="label">UAH Donated</div>
+    </div>
+</div>
+
+<h3 class="section-title">Recent Activity</h3>
+
+@if (!Model.RecentRecords.Any())
+{
+    <div class="empty-state">
+        <p>No records yet.</p>
+        <a asp-controller="HelpRecords" asp-action="Create">Add the first one →</a>
+    </div>
+}
+else
+{
+    <table class="activity-table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Volunteer</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in Model.RecentRecords)
+            {
+                <tr>
+                    <td>@r.HelpDate.ToString("yyyy-MM-dd")</td>
+                    <td><strong>@r.Volunteer?.FullName</strong></td>
+                    <td><span class="badge">@r.HelpType?.Name</span></td>
+                    <td><span class="amount">@r.Amount.ToString("N2") UAH</span></td>
+                    <td>@r.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,31 +1,26 @@
-﻿@model List<VolunteerHub.Mvc.Models.HelpType>
+@using VolunteerHub.Data.Models
+@model List<HelpType>
 
 <h2>Help Types</h2>
+<p class="add-button"><a asp-action="Create">Add new type</a></p>
 
 @if (TempData["Error"] != null)
 {
-    <p style="color:red;">@TempData["Error"]</p>
+    <p style="color:red">@TempData["Error"]</p>
 }
-
-<p><a asp-action="Create">Create new</a></p>
 
 <table>
     <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th></th>
-        </tr>
+        <tr><th>Name</th><th></th></tr>
     </thead>
     <tbody>
         @foreach (var t in Model)
         {
             <tr>
-                <td>@t.Id</td>
                 <td>@t.Name</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@t.Id">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@t.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@t.HelpTypeId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@t.HelpTypeId">Delete</a>
                 </td>
             </tr>
         }

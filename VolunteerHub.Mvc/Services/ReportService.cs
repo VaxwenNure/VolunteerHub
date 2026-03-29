@@ -1,56 +1,56 @@
-﻿namespace VolunteerHub.Mvc.Services
+﻿using Microsoft.EntityFrameworkCore;
+using VolunteerHub.Data.Data;
+
+namespace VolunteerHub.Mvc.Services
 {
     public class ReportService
     {
-        private readonly IJsonStore _store;
-        public ReportService(IJsonStore store) => _store = store;
+        private readonly VolunteerHubContext _db;
+        public ReportService(VolunteerHubContext db) => _db = db;
 
         public List<TotalByVolunteerRow> TotalsByVolunteer(DateTime? from = null, DateTime? to = null)
         {
-            var records = _store.GetHelpRecords();
+            // Load into memory first, then filter — avoids SQLite decimal/date translation errors
+            var records = _db.VolunteerHelps
+                             .Include(h => h.Volunteer)
+                             .AsEnumerable(); // switch to client-side here
 
-            if (from.HasValue) records = records.Where(r => r.Date.Date >= from.Value.Date).ToList();
-            if (to.HasValue) records = records.Where(r => r.Date.Date <= to.Value.Date).ToList();
+            if (from.HasValue) records = records.Where(r => r.HelpDate.Date >= from.Value.Date);
+            if (to.HasValue) records = records.Where(r => r.HelpDate.Date <= to.Value.Date);
 
-            var volunteers = _store.GetVolunteers().ToDictionary(v => v.Id, v => v.FullName);
-
-            var result = records
-                .GroupBy(r => r.VolunteerId)
+            return records
+                .GroupBy(r => new { r.VolunteerId, r.Volunteer!.FullName })
                 .Select(g => new TotalByVolunteerRow
                 {
-                    VolunteerId = g.Key,
-                    VolunteerName = volunteers.TryGetValue(g.Key, out var name) ? name : $"#{g.Key}",
+                    VolunteerId = g.Key.VolunteerId,
+                    VolunteerName = g.Key.FullName,
                     RecordsCount = g.Count(),
                     TotalAmount = g.Sum(x => x.Amount)
                 })
                 .OrderByDescending(x => x.TotalAmount)
                 .ToList();
-
-            return result;
         }
 
         public List<TotalByTypeRow> TotalsByHelpType(DateTime? from = null, DateTime? to = null)
         {
-            var records = _store.GetHelpRecords();
+            var records = _db.VolunteerHelps
+                             .Include(h => h.HelpType)
+                             .AsEnumerable();
 
-            if (from.HasValue) records = records.Where(r => r.Date.Date >= from.Value.Date).ToList();
-            if (to.HasValue) records = records.Where(r => r.Date.Date <= to.Value.Date).ToList();
+            if (from.HasValue) records = records.Where(r => r.HelpDate.Date >= from.Value.Date);
+            if (to.HasValue) records = records.Where(r => r.HelpDate.Date <= to.Value.Date);
 
-            var types = _store.GetHelpTypes().ToDictionary(t => t.Id, t => t.Name);
-
-            var result = records
-                .GroupBy(r => r.HelpTypeId)
+            return records
+                .GroupBy(r => new { r.HelpTypeId, r.HelpType!.Name })
                 .Select(g => new TotalByTypeRow
                 {
-                    HelpTypeId = g.Key,
-                    HelpTypeName = types.TryGetValue(g.Key, out var name) ? name : $"#{g.Key}",
+                    HelpTypeId = g.Key.HelpTypeId,
+                    HelpTypeName = g.Key.Name,
                     RecordsCount = g.Count(),
                     TotalAmount = g.Sum(x => x.Amount)
                 })
                 .OrderByDescending(x => x.TotalAmount)
                 .ToList();
-
-            return result;
         }
     }
 

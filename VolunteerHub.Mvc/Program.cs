@@ -1,28 +1,30 @@
-var builder = WebApplication.CreateBuilder(args);
+using Microsoft.EntityFrameworkCore;
+using VolunteerHub.Data.Data;
+using VolunteerHub.Mvc.Services;
 
+var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDistributedMemoryCache();
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
-    options.Cookie.HttpOnly = true;
-    options.Cookie.IsEssential = true;
-});
+builder.Services.AddDbContext<VolunteerHubContext>(options =>
+    options.UseSqlite("Data Source=volunteerhub.db"));
 
-
-builder.Services.AddSingleton<VolunteerHub.Mvc.Services.IJsonStore, VolunteerHub.Mvc.Services.JsonStore>();
-builder.Services.AddScoped<VolunteerHub.Mvc.Services.ReportService>();
+builder.Services.AddScoped<ReportService>();
 
 var app = builder.Build();
+
+// Auto-create DB and seed on startup
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<VolunteerHubContext>();
+    db.Database.EnsureCreated();
+    DbInitializer.Seed(db);
+}
 
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseSession();
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Volunteers}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

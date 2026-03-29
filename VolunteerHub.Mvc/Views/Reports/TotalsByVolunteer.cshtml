@@ -1,18 +1,17 @@
-﻿@model List<VolunteerHub.Mvc.Services.TotalByVolunteerRow>
-
-@section Head {
-    <style>
-        .hint {
-            color: #666;
-            margin-bottom: 10px;
-        }
-    </style>
-}
+@using VolunteerHub.Mvc.Services
+@model List<TotalByVolunteerRow>
 
 <h2>Report: Totals by Volunteer</h2>
-<p class="hint">This report groups help records by volunteer and calculates total amount (LINQ GroupBy + Sum).</p>
+<p class="description">This report groups help records by volunteer and calculates total amount.</p>
 
-<partial name="_DateFilter" />
+<form method="get">
+    From: <input type="date" name="from" value="@ViewBag.From" />
+    To: <input type="date" name="to" value="@ViewBag.To" />
+    <button type="submit">Apply</button>
+    <a asp-action="TotalsByVolunteer">Reset</a>
+</form>
+
+<br />
 
 <table>
     <thead>
@@ -28,14 +27,8 @@
             <tr>
                 <td>@row.VolunteerName</td>
                 <td>@row.RecordsCount</td>
-                <td><money value="@row.TotalAmount"></money></td>
+                <td><b>@row.TotalAmount.ToString("N2") UAH</b></td>
             </tr>
         }
     </tbody>
 </table>
-
-@section Scripts {
-    <script>
-        console.log("TotalsByVolunteer loaded");
-    </script>
-}

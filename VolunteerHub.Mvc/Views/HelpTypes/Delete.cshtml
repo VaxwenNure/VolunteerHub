@@ -1,11 +1,12 @@
-﻿@model VolunteerHub.Mvc.Models.HelpType
+@using VolunteerHub.Data.Models
+@model HelpType
 
 <h2>Delete Help Type</h2>
 
-<p>Are you sure you want to delete <b>@Model.Name</b>?</p>
+<p>Are you sure you want to delete type <b>@Model.Name</b>?</p>
 
 <form asp-action="DeleteConfirmed" method="post">
-    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="id" value="@Model.HelpTypeId" />
     <button type="submit">Delete</button>
     <a asp-action="Index">Cancel</a>
 </form>

@@ -1,13 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace VolunteerHub.Mvc.Models.ViewModels
 {
     public class HelpRecordEditVm
     {
-        public int Id { get; set; }
+        public int VolunteerHelpId { get; set; }
         public int VolunteerId { get; set; }
         public int HelpTypeId { get; set; }
-        public DateTime Date { get; set; } = DateTime.Today;
+        public DateTime HelpDate { get; set; } = DateTime.Today;
         public decimal Amount { get; set; }
         public string Description { get; set; } = "";
 
